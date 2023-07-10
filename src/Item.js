@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Item(props) {
-  const [total, setTotal] = useState(1);
-
   const { info } = props;
+
+  const [total, setTotal] = useState(() => Number.parseInt(localStorage.getItem(info.id), 10) || 1);
+
+  useEffect(() => {
+    localStorage.setItem(info.id, total);
+  })
+
   if (!info) {
     return null;
   }
+
+  
 
   function handleIncreaseClick() {
     setTotal((prevTotal) => prevTotal + 1);

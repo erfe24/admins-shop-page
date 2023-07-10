@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ItemList from "./ItemList.js";
 import ItemForm from "./ItemForm.js";
 
 export default function Shop() {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(() => JSON.parse(localStorage.getItem("items")) || [])
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
 
@@ -18,6 +18,11 @@ export default function Shop() {
 
     return null;
   }
+
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(items));
+    document.title = items.length > 0 ? `${items.length} товар(а/ов)` : "Товары отсутствуют";
+  })
 
   function handleDeleteClick(item) {
     setItems((prevItems) => prevItems.filter((it) => it.id !== item.id));
